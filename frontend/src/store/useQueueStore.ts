@@ -15,6 +15,11 @@ interface Token {
   riskLevel: string;
   patientId: { name: string; age: number; gender: string };
   estimatedWaitTimeMinutes?: number;
+  token?: string;
+  name?: string;
+  symptomsRaw?: string;
+  aiRationale?: string;
+  createdAt?: string;
 }
 
 interface QueueState {
