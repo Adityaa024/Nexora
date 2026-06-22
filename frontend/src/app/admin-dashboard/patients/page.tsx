@@ -12,26 +12,26 @@ export default function ManagePatients() {
 
   // Since we don't have a dedicated /api/users endpoint in the backend right now,
   // we'll still use dummy data for the list, but implement the functional "Add Patient" action.
-  useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const res = await fetch('http://localhost:5000/api/auth/patients');
-        if (res.ok) {
-          const data = await res.json();
-          setPatients(data.map((p: any) => ({
-            id: p._id,
-            name: p.name,
-            email: p.email,
-            date: new Date(p.createdAt).toLocaleDateString()
-          })));
-        }
-      } catch (err) {
-        console.error('Failed to fetch patients:', err);
+  const fetchPatients = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/patients');
+      if (res.ok) {
+        const data = await res.json();
+        setPatients(data.map((p: any) => ({
+          id: p._id,
+          name: p.name,
+          email: p.email,
+          date: new Date(p.createdAt).toLocaleDateString()
+        })));
       }
-    };
+    } catch (err) {
+      console.error('Failed to fetch patients:', err);
+    }
+  };
+
+  useEffect(() => {
     fetchPatients();
   }, []);
-
   const handleAddPatient = async (e: any) => {
     e.preventDefault();
     setIsSubmitting(true);
