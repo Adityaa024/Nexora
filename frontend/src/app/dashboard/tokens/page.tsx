@@ -46,8 +46,13 @@ export default function MyTokens() {
     return () => clearInterval(queueInterval);
   }, [setActiveTokens]);
 
+  const myTokenIndex = activeTokens.findIndex(
+    (token: any) =>
+      (myUserId && (token.patientId === myUserId || token.patientId?._id === myUserId)) || (!myUserId && token.name === myPatientName)
+  );
+
   const myTokens = activeTokens.filter((token: any) => 
-    (myUserId && token.patientId === myUserId) || (!myUserId && token.name === myPatientName)
+    (myUserId && (token.patientId === myUserId || token.patientId?._id === myUserId)) || (!myUserId && token.name === myPatientName)
   );
 
   return (

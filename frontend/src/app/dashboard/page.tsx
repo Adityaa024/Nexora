@@ -74,7 +74,7 @@ export default function PatientQueueSpace() {
   let isMyTurn = false;
 
   for (const token of activeTokens) {
-    const isMatch = (myUserId && token.patientId === myUserId) || (!myUserId && token.name === myPatientName);
+    const isMatch = (myUserId && (token.patientId === myUserId || token.patientId?._id === myUserId)) || (!myUserId && token.name === myPatientName);
     
     if (isMatch) {
       myToken = token;

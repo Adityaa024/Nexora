@@ -13,7 +13,7 @@ interface Token {
   status: string;
   priorityScore: number;
   riskLevel: string;
-  patientId: { name: string; age: number; gender: string };
+  patientId: any;
   estimatedWaitTimeMinutes?: number;
   token?: string;
   name?: string;
