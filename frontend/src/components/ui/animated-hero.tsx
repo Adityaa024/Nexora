@@ -57,7 +57,7 @@ function Hero() {
             </h1>
 
             <p className="text-lg md:text-xl leading-relaxed tracking-tight text-slate-600 max-w-2xl text-center mt-6">
-              Experience the future of clinical appointments. Real-time token tracking, AI triage, and zero-refresh live data synchronization.
+              <strong className="font-bold text-emerald-800">Next-generation patient flow intelligence.</strong> Real-time token tracking, AI triage, and zero-refresh live data synchronization.
             </p>
           </div>
           <div className="flex flex-row gap-3 mt-4">

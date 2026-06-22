@@ -117,7 +117,7 @@ export default function LandingPage() {
               <div className="w-8 h-8 bg-emerald-700 rounded-lg flex items-center justify-center">
                 <Activity className="w-5 h-5 text-white" />
               </div>
-              <span className="text-2xl font-black tracking-tight text-emerald-900">MedQueue<span className="text-emerald-500">AI</span></span>
+              <span className="text-2xl font-black tracking-tight text-emerald-900 uppercase">Nexora</span>
             </div>
             <div className="flex items-center space-x-4">
               <Link href="/login" className="text-slate-600 hover:text-emerald-700 font-bold transition-colors">
