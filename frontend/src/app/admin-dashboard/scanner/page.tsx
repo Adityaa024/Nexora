@@ -19,7 +19,7 @@ export default function CheckInScanner() {
     setIsVerifying(true);
     setScanResult(null);
     try {
-      const res = await fetch('http://localhost:5000/api/queue/scan', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tokenNumber: tokenToVerify })

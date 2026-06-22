@@ -15,7 +15,7 @@ export default function ManageQueues() {
 
   const fetchQueue = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/queue/active');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/active`);
       const data = await res.json();
       if (res.ok) {
         setActiveTokens(data);
@@ -41,7 +41,7 @@ export default function ManageQueues() {
     }
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/queue/book', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/book`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -72,7 +72,7 @@ export default function ManageQueues() {
     try {
       // Complete current if any
       if (currentActive) {
-        await fetch('http://localhost:5000/api/queue/state', {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tokenId: currentActive._id, newState: 'COMPLETED' })
@@ -80,7 +80,7 @@ export default function ManageQueues() {
       }
       // Call next if any
       if (waitingList.length > 0) {
-        await fetch('http://localhost:5000/api/queue/state', {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tokenId: waitingList[0]._id, newState: 'IN_CONSULTATION' })
@@ -96,7 +96,7 @@ export default function ManageQueues() {
     const currentActive = activeTokens.find((t: any) => t.status === 'IN_CONSULTATION');
     if (!currentActive) return;
     try {
-      await fetch('http://localhost:5000/api/queue/state', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tokenId: currentActive._id, newState: 'COMPLETED' })

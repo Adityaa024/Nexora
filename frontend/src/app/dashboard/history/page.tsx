@@ -15,7 +15,7 @@ export default function HistoryPage() {
         if (!userStr) return;
         const user = JSON.parse(userStr);
         
-        const res = await fetch(`http://localhost:5000/api/queue/history/${user.id || user._id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/history/${user.id || user._id}`);
         if (!res.ok) throw new Error('Failed to fetch history');
         const data = await res.json();
         setHistoryData(data);

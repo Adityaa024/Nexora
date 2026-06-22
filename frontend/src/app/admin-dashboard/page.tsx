@@ -22,10 +22,10 @@ export default function AdminControlRoom() {
   // Live Queue Fetching
   const fetchQueue = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/queue/active');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/active`);
       const data = await res.json();
       
-      const allRes = await fetch('http://localhost:5000/api/queue/all');
+      const allRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/all`);
       const allData = await allRes.json();
 
       if (res.ok && allRes.ok) {
@@ -71,7 +71,7 @@ export default function AdminControlRoom() {
       // First, create a dummy user or just pass a hardcoded patientId for walk-ins if backend allows it.
       // Alternatively, we should have a /api/queue/book-walkin. Assuming normal book works if we pass a random valid ID.
       // For demo, we use the admin's ID or a dummy ID.
-      const res = await fetch('http://localhost:5000/api/queue/book', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/book`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,7 +96,7 @@ export default function AdminControlRoom() {
 
   const handleCallPatient = async (tokenId: string) => {
     try {
-      await fetch('http://localhost:5000/api/queue/state', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tokenId, newState: 'IN_CONSULTATION' })
@@ -109,7 +109,7 @@ export default function AdminControlRoom() {
 
   const handleEndSession = async (tokenId: string) => {
     try {
-      await fetch('http://localhost:5000/api/queue/state', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tokenId, newState: 'COMPLETED' })

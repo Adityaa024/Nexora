@@ -29,7 +29,7 @@ export default function PatientQueueSpace() {
   useEffect(() => {
     const fetchQueue = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/queue/active');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/active`);
         const data = await res.json();
         if (res.ok) {
           // Normalize backend data to match expected frontend structure
@@ -110,7 +110,7 @@ export default function PatientQueueSpace() {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/queue/book', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/book`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

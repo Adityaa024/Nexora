@@ -14,7 +14,7 @@ export default function ManagePatients() {
   // we'll still use dummy data for the list, but implement the functional "Add Patient" action.
   const fetchPatients = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/auth/patients');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/patients`);
       if (res.ok) {
         const data = await res.json();
         setPatients(data.map((p: any) => ({
@@ -36,7 +36,7 @@ export default function ManagePatients() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
