@@ -136,7 +136,7 @@ export default function CheckInScanner() {
                   onKeyDown={(e) => e.key === 'Enter' && handleVerify()}
                 />
                 <button 
-                  onClick={handleVerify}
+                  onClick={() => handleVerify()}
                   disabled={isVerifying}
                   className="bg-[#1C4235] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#112F24] transition-colors flex items-center gap-2 disabled:opacity-50"
                 >
