@@ -1,12 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { LayoutDashboard, ScanLine, ListTree, Calendar, Users, History, BrainCircuit, LogOut, CheckSquare } from 'lucide-react';
+import { LayoutDashboard, ScanLine, ListTree, Calendar, Users, History, BrainCircuit, LogOut, CheckSquare, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 export default function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const mainLinks = [
     { name: 'Overview', href: '/admin-dashboard', icon: LayoutDashboard },
@@ -23,15 +25,26 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
 
   return (
     <div className="min-h-screen bg-[#F5F7F5] flex flex-col md:flex-row">
+      {/* Mobile Sidebar Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar Navigation */}
-      <aside className="hidden md:flex w-64 bg-[#112F24] text-[#E0E7E4] flex-col fixed h-full z-10 shadow-xl">
-        <div className="p-6 mb-2">
+      <aside className={`fixed md:sticky top-0 h-screen w-64 bg-[#112F24] text-[#E0E7E4] flex-col z-50 shadow-xl transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 flex`}>
+        <div className="p-6 mb-2 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="bg-[#1C4235] p-2 rounded-lg">
               <CheckSquare className="w-6 h-6 text-[#4ADE80]" />
             </div>
-            <span className="text-xl font-bold text-white tracking-tight">NEXORA</span>
+            <span className="text-2xl font-black tracking-tight">NEXORA</span>
           </div>
+          <button onClick={() => setIsMobileMenuOpen(false)} className="md:hidden text-slate-400 hover:text-white p-1">
+            <X className="w-6 h-6" />
+          </button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-4">
@@ -93,7 +106,19 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 md:ml-64 w-full overflow-x-hidden flex flex-col min-h-screen">
+      <main className="flex-1 w-full overflow-x-hidden flex flex-col min-h-screen">
+        {/* Mobile Header */}
+        <header className="md:hidden flex items-center justify-between bg-white border-b border-slate-200 px-4 py-4 sticky top-0 z-30 shadow-sm">
+          <div className="flex items-center gap-2">
+            <div className="bg-[#1C4235] p-1.5 rounded-lg">
+              <CheckSquare className="w-4 h-4 text-[#4ADE80]" />
+            </div>
+            <span className="text-lg font-bold text-slate-800 tracking-tight">NEXORA</span>
+          </div>
+          <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
+            <Menu className="w-6 h-6" />
+          </button>
+        </header>
         {/* Top Header */}
         <header className="hidden md:flex items-center justify-end bg-white border-b border-slate-200 px-8 py-4 sticky top-0 z-10 shadow-sm">
           <div className="flex items-center gap-4">

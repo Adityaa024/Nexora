@@ -184,7 +184,7 @@ export default function AdminControlRoom() {
               <div className="flex justify-between items-center mb-4 border-b border-slate-200 pb-3">
                 <h3 className="text-sm font-bold text-slate-500 tracking-wider uppercase">Today's Summary</h3>
               </div>
-              <div className="grid grid-cols-2 gap-y-4 gap-x-8 text-sm font-bold text-slate-500">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-4 text-sm font-bold text-slate-500">
                 <div className="flex items-center justify-between gap-2">
                   <span>TODAY'S</span>
                   <span className="text-blue-600 text-lg">{todaysTokens.length}</span>
@@ -204,16 +204,15 @@ export default function AdminControlRoom() {
               </div>
             </div>
             
-            <div className="ml-12 relative shrink-0 z-10 hidden sm:block pr-8">
-              <div className="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center relative shadow-inner">
-                <div className="w-7 h-7 bg-white border-2 border-red-500 rounded-full flex items-center justify-center z-10 text-red-500">
+            <div className="ml-4 relative shrink-0 z-10 hidden sm:flex items-center gap-2">
+              <div className="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center shadow-inner">
+                <div className="w-7 h-7 bg-white border-2 border-red-500 rounded-full flex items-center justify-center text-red-500">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
-                {/* Black button overlay */}
-                <Link href="/admin-dashboard/queues" className="absolute top-1/2 left-full translate-x-2 -translate-y-1/2 bg-[#333] hover:bg-black transition-colors rounded-xl w-12 h-16 flex items-center justify-center shadow-lg z-20 cursor-pointer group-hover:translate-x-3 group-hover:bg-emerald-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </Link>
               </div>
+              <Link href="/admin-dashboard/queues" className="bg-[#333] hover:bg-black transition-colors rounded-xl w-12 h-16 flex items-center justify-center shadow-lg z-20 cursor-pointer hover:bg-emerald-800">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </Link>
             </div>
 
             {/* Notification Tag Overlay */}
