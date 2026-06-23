@@ -23,22 +23,30 @@ Patients are dynamically ordered in a live "Smart Queue" that updates in real-ti
 
 ---
 
-## ✨ Key Features
+## ✨ Comprehensive Feature List
 
-### 👨‍⚕️ For Administrators & Staff
-- **Live Control Room:** A real-time, interactive dashboard displaying active tokens, waiting patients, and predicted wait times.
-- **AI Triage Alerts:** Instantly flags critical patients with flashing red banners and immediate call-to-action buttons.
-- **Smart Queue Management:** Automatically sorts patients by AI-calculated risk level rather than first-come-first-serve.
-- **Quick Add Patient:** A rapid-entry module for receptionists to instantly register walk-ins and assign live tokens.
-- **Session Control:** 1-click tools to Call Next Patient and End Consultations.
+### 👨‍⚕️ Admin & Hospital Management
+- **Intelligent Hospital Control Center:** A state-of-the-art dashboard giving doctors and admins a birds-eye view of all ongoing clinical sessions.
+- **Smart Queue Algorithm:** Discards the outdated "first-come, first-serve" model. Patients are dynamically reordered in the queue based on an AI-calculated medical severity score.
+- **AI Triage Emergency Alerts:** Instantly detects critical keywords in patient symptoms (e.g., "chest pain") and flashes full-screen red emergency alerts for immediate triage.
+- **QR Check-in Scanner:** A built-in camera module that allows receptionists to scan patient QR codes for instant, contactless walk-in registration.
+- **Appointment Scheduling Engine:** Full calendar integration allowing staff to manage upcoming bookings and track daily patient load.
+- **One-Click Session Management:** Streamlined clinical workflow buttons to "Call Next Patient", "Mark Completed", or "End Session".
+- **Global Patient Directory:** A searchable database of all registered patients, their contact info, and their lifetime visitation history.
 
-### 🤒 For Patients
-- **Seamless Authentication:** Secure Google Sign-In and standard email/password authentication.
-- **Live Token Tracking:** A stunning, live-updating dashboard showing the patient's token number, current status, and real-time wait estimation.
-- **AI Symptom Analysis:** Patients type their symptoms naturally; the AI translates this into a clinical summary and risk score.
-- **Medical History:** A complete, secure log of all past visits and AI-generated health plans.
+### 🤒 Patient Experience
+- **Beautiful Personal Dashboard:** A gorgeous, glassmorphism-styled UI where patients can view their active status.
+- **Live Wait-Time Predictions:** Patients see an exact, live-updating countdown (in minutes) of when they will see the doctor, eliminating waiting room anxiety.
+- **Real-Time WebSocket Sync:** The second a doctor calls a patient, the patient's screen instantly flashes "IT'S YOUR TURN!" without them ever needing to refresh the page.
+- **Conversational AI Symptom Checker:** Patients type their symptoms naturally. Google Gemini AI processes this, generates a clinical summary, and assigns a precise priority score.
+- **Medical History Vault:** Patients can log in to view their past visits, doctor notes, and health trajectory.
+- **Seamless & Secure Login:** Features Google OAuth One-Tap sign-in alongside traditional Email/Password authentication via Firebase Security.
 
----
+### 🧠 Under The Hood (Technical Features)
+- **Google Gemini Integration:** Complex prompt engineering ensures the AI outputs strictly formatted JSON risk assessments based on medical data.
+- **Socket.io Event Broadcasting:** A high-performance WebSocket architecture handling live queue updates to hundreds of connected clients simultaneously.
+- **Dynamic Routing & Middleware:** Secure Next.js App Router setup protecting admin routes from unauthorized access.
+- **Fully Responsive Design:** The entire platform is meticulously styled with Tailwind CSS to look pixel-perfect on 4K monitors, tablets, and small mobile phones.
 
 ## 🛠️ Technology Stack
 
