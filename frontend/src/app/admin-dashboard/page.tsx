@@ -5,6 +5,8 @@ import { Users, Clock, Brain, AlertTriangle, UserPlus, Stethoscope, CheckCircle2
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+import { useQueueStore } from '../../store/useQueueStore';
+
 export default function AdminControlRoom() {
   const [tokens, setTokens] = useState<any[]>([]);
   const [allTokens, setAllTokens] = useState<any[]>([]);
@@ -12,6 +14,9 @@ export default function AdminControlRoom() {
   const [hasEmergency, setHasEmergency] = useState(false);
   const [emergencyToken, setEmergencyToken] = useState<any>(null);
   const [newPatientNotification, setNewPatientNotification] = useState<{ time: string } | null>(null);
+
+  // Subscribe to the global socket state
+  const { activeTokens } = useQueueStore();
 
   // Walk-in Modal State
   const [isWalkinModalOpen, setIsWalkinModalOpen] = useState(false);
@@ -58,9 +63,15 @@ export default function AdminControlRoom() {
     }
   };
 
+  // Instantly fetch whenever the global WebSocket broadcasts an update
   useEffect(() => {
     fetchQueue();
-    const interval = setInterval(fetchQueue, 3000); // Poll every 3s
+  }, [activeTokens]);
+
+  useEffect(() => {
+    fetchQueue();
+    // Fallback polling only needed every 10s since WebSockets are instant
+    const interval = setInterval(fetchQueue, 10000); 
     return () => clearInterval(interval);
   }, []);
 

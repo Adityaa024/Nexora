@@ -35,7 +35,11 @@ export default function LoginPage() {
     }
   };
 
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
   const handleGoogleSignIn = async () => {
+    if (isGoogleLoading) return;
+    setIsGoogleLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
@@ -58,7 +62,11 @@ export default function LoginPage() {
       toast.success('Successfully logged in with Google!');
       window.location.href = data.user.role === 'ADMIN' ? '/admin-dashboard' : '/dashboard';
     } catch (err: any) {
-      setError(err.message);
+      if (err.code !== 'auth/popup-closed-by-user' && err.code !== 'auth/cancelled-popup-request') {
+        setError(err.message);
+      }
+    } finally {
+      setIsGoogleLoading(false);
     }
   };
 
