@@ -27,10 +27,12 @@ export default function AdminControlRoom() {
   // Live Queue Fetching
   const fetchQueue = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/active`);
-      const data = await res.json();
+      const [res, allRes] = await Promise.all([
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/active`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/all`)
+      ]);
       
-      const allRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/all`);
+      const data = await res.json();
       const allData = await allRes.json();
 
       if (res.ok && allRes.ok) {
