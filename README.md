@@ -23,7 +23,35 @@ Patients are dynamically ordered in a live "Smart Queue" that updates in real-ti
 
 ---
 
-## ✨ Comprehensive Feature List
+## 📸 Platform Previews
+
+<div align="center">
+  <img src="https://via.placeholder.com/800x400?text=Hospital+Control+Center" alt="Hospital Control Center Dashboard showing live patient stats, tokens, and AI predictions" width="800" />
+  <p><em>Hospital Control Center: A real-time dashboard displaying active clinic metrics, AI-calculated wait times, and emergency alerts.</em></p>
+</div>
+
+<br/>
+
+<div align="center">
+  <img src="https://via.placeholder.com/800x400?text=Receptionist+Queue+Management" alt="Receptionist view managing clinical sessions and adding walk-in patients" width="800" />
+  <p><em>Queue Management: Staff can instantly call the next patient, view AI triage rationale (symptom severity), and add walk-ins.</em></p>
+</div>
+
+<br/>
+
+<div align="center">
+  <img src="https://via.placeholder.com/800x400?text=QR+Check-in+Scanner" alt="Contactless QR Code Scanner for instant patient check-ins" width="800" />
+  <p><em>Check-In Scanner: Features a live camera feed to scan patient QR codes, registering them in under 3 seconds with zero paperwork.</em></p>
+</div>
+
+<br/>
+
+<div align="center">
+  <img src="https://via.placeholder.com/800x400?text=Live+Patient+Dashboard" alt="Patient mobile view showing their QR code and live wait time" width="800" />
+  <p><em>Live Patient Status: Patients track their exact queue position and a data-driven wait-time estimation directly on their phones.</em></p>
+</div>
+
+---
 
 ### 👨‍⚕️ Admin & Hospital Management
 - **Intelligent Hospital Control Center:** A state-of-the-art dashboard giving doctors and admins a birds-eye view of all ongoing clinical sessions.
