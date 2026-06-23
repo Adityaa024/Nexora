@@ -59,7 +59,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-[100dvh] flex flex-col md:flex-row font-geist w-full">
+    <div className="min-h-[100dvh] flex flex-col md:flex-row font-geist w-full overflow-hidden">
       {/* Left column: sign-up form */}
       <section className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
