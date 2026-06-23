@@ -184,7 +184,7 @@ export default function AdminControlRoom() {
               <div className="flex justify-between items-center mb-4 border-b border-slate-200 pb-3">
                 <h3 className="text-sm font-bold text-slate-500 tracking-wider uppercase">Today's Summary</h3>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-4 text-sm font-bold text-slate-500">
+              <div className="flex flex-col gap-y-3 text-sm font-bold text-slate-500">
                 <div className="flex items-center justify-between gap-2">
                   <span>TODAY'S</span>
                   <span className="text-blue-600 text-lg">{todaysTokens.length}</span>
