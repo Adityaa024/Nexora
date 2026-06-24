@@ -108,13 +108,17 @@ export default function ManageQueues() {
   const handleEndSession = async () => {
     const currentActive = activeTokens.find((t: any) => t.status === 'IN_CONSULTATION');
     if (!currentActive) return;
+    
+    // Optimistic UI updates
+    setActiveTokens(activeTokens.filter((t: any) => t._id !== currentActive._id));
+    setAllTokens(allTokens.map((t: any) => t._id === currentActive._id ? { ...t, status: 'COMPLETED' } : t));
+
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tokenId: currentActive._id, newState: 'COMPLETED' })
-      });
-      fetchQueue();
+      }).then(() => fetchQueue());
     } catch (err) {
       console.error(err);
     }
