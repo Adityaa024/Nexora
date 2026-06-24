@@ -32,6 +32,10 @@ interface SignInPageProps {
   onGoogleSignIn?: () => void;
   onResetPassword?: () => void;
   onCreateAccount?: () => void;
+  email?: string;
+  setEmail?: (val: string) => void;
+  password?: string;
+  setPassword?: (val: string) => void;
 }
 
 // --- SUB-COMPONENTS ---
@@ -65,6 +69,10 @@ export const SignInPage: React.FC<SignInPageProps> = ({
   onGoogleSignIn,
   onResetPassword,
   onCreateAccount,
+  email,
+  setEmail,
+  password,
+  setPassword,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -86,7 +94,14 @@ export const SignInPage: React.FC<SignInPageProps> = ({
               <div className="animate-element animate-delay-300">
                 <label className="text-sm font-medium text-muted-foreground">Email Address</label>
                 <GlassInputWrapper>
-                  <input name="email" type="email" placeholder="Enter your email address" className="w-full bg-transparent text-sm p-4 rounded-2xl focus:outline-none" />
+                  <input 
+                    name="email" 
+                    type="email" 
+                    value={email}
+                    onChange={(e) => setEmail?.(e.target.value)}
+                    placeholder="Enter your email address" 
+                    className="w-full bg-transparent text-sm p-4 rounded-2xl focus:outline-none" 
+                  />
                 </GlassInputWrapper>
               </div>
 
@@ -94,7 +109,14 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                 <label className="text-sm font-medium text-muted-foreground">Password</label>
                 <GlassInputWrapper>
                   <div className="relative">
-                    <input name="password" type={showPassword ? 'text' : 'password'} placeholder="Enter your password" className="w-full bg-transparent text-sm p-4 pr-12 rounded-2xl focus:outline-none" />
+                    <input 
+                      name="password" 
+                      type={showPassword ? 'text' : 'password'} 
+                      value={password}
+                      onChange={(e) => setPassword?.(e.target.value)}
+                      placeholder="Enter your password" 
+                      className="w-full bg-transparent text-sm p-4 pr-12 rounded-2xl focus:outline-none" 
+                    />
                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-3 flex items-center">
                       {showPassword ? <EyeOff className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" /> : <Eye className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />}
                     </button>

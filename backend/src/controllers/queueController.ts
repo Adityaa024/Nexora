@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Token from '../models/Token';
 import { triageSymptoms } from '../services/geminiService';
-import { emitQueueStateUpdate, emitCriticalAlarm } from '../services/socketService';
+import { emitQueueStateUpdate, emitCriticalAlarm, emitAnnounceToken } from '../services/socketService';
 
 const generateTokenNumber = () => {
   const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -152,6 +152,23 @@ export const getPatientHistory = async (req: Request, res: Response): Promise<vo
     res.json(history);
   } catch (error) {
     console.error('Error fetching patient history:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const announceToken = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { tokenId } = req.body;
+    const token = await Token.findById(tokenId).populate('patientId', 'name age gender');
+    if (!token) {
+      res.status(404).json({ message: 'Token not found' });
+      return;
+    }
+    
+    emitAnnounceToken(token);
+    res.json({ success: true, message: 'Token announced' });
+  } catch (error) {
+    console.error('Error announcing token:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

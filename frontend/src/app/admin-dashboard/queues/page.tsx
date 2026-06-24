@@ -11,7 +11,9 @@ export default function ManageQueues() {
   const [avgTime, setAvgTime] = useState(10);
   const [newPatientName, setNewPatientName] = useState('');
   const [newPatientEmail, setNewPatientEmail] = useState('');
+  const [newPatientEmail, setNewPatientEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [allTokens, setAllTokens] = useState<any[]>([]);
 
   const fetchQueue = async () => {
     try {
@@ -22,6 +24,13 @@ export default function ManageQueues() {
       }
     } catch (err) {
       console.error('Failed to fetch queue:', err);
+    }
+    try {
+      const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/all`);
+      const data2 = await res2.json();
+      if (res2.ok) setAllTokens(data2);
+    } catch (err) {
+      console.error('Failed to fetch all tokens:', err);
     }
   };
 
@@ -67,23 +76,28 @@ export default function ManageQueues() {
 
   const handleCallNext = async () => {
     const waitingList = activeTokens.filter((t: any) => t.status === 'WAITING' || t.status === 'ARRIVED' || t.status === 'BOOKED');
-    const currentActive = activeTokens.find((t: any) => t.status === 'IN_CONSULTATION');
     
     try {
-      // Complete current if any
-      if (currentActive) {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tokenId: currentActive._id, newState: 'COMPLETED' })
-        });
-      }
-      // Call next if any
       if (waitingList.length > 0) {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
+        const nextToken = waitingList[0];
+        
+        // Optimistic UI Update
+        setActiveTokens(activeTokens.map((t: any) => 
+          t._id === nextToken._id ? { ...t, status: 'IN_CONSULTATION' } : t
+        ));
+
+        // Fire and forget
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tokenId: waitingList[0]._id, newState: 'IN_CONSULTATION' })
+          body: JSON.stringify({ tokenId: nextToken._id, newState: 'IN_CONSULTATION' })
+        });
+
+        // Announce it
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/announce`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tokenId: nextToken._id })
         });
       }
       fetchQueue();
@@ -110,6 +124,11 @@ export default function ManageQueues() {
   const currentlySeeing = activeTokens.find((t: any) => t.status === 'IN_CONSULTATION');
   const waitingPatients = activeTokens.filter((t: any) => t.status === 'WAITING' || t.status === 'ARRIVED' || t.status === 'BOOKED');
 
+  // Stats calculation
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const todaysTokens = allTokens.filter(t => t.createdAt && t.createdAt.startsWith(todayStr));
+  const seenTodayCount = todaysTokens.filter(t => t.status === 'COMPLETED').length;
+
   return (
     <div className="space-y-6">
       <header className="mb-8 border-b border-slate-200 pb-4 flex justify-between items-end">
@@ -119,7 +138,35 @@ export default function ManageQueues() {
         </div>
       </header>
 
-      {/* Control Panel */}
+      {/* Top Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-[#111827] rounded-3xl p-6 shadow-sm border border-slate-800 flex flex-col justify-center items-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-[40px]"></div>
+          <div className="flex items-center gap-2 mb-1 z-10">
+            <h3 className="text-4xl font-black text-pink-400">
+              {currentlySeeing ? (currentlySeeing.tokenNumber?.split('-').pop() || currentlySeeing.token?.split('-').pop()) : '--'}
+            </h3>
+          </div>
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-wider z-10">Serving now</p>
+        </div>
+
+        <div className="bg-[#111827] rounded-3xl p-6 shadow-sm border border-slate-800 flex flex-col justify-center items-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-[40px]"></div>
+          <div className="flex items-center gap-2 mb-1 z-10">
+            <h3 className="text-4xl font-black text-orange-400">{waitingPatients.length}</h3>
+          </div>
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-wider z-10">In queue</p>
+        </div>
+
+        <div className="bg-[#111827] rounded-3xl p-6 shadow-sm border border-slate-800 flex flex-col justify-center items-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-[40px]"></div>
+          <div className="flex items-center gap-2 mb-1 z-10">
+            <h3 className="text-4xl font-black text-indigo-400">{seenTodayCount}</h3>
+          </div>
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-wider z-10">Seen today</p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
           <h2 className="text-lg font-bold flex items-center gap-2 mb-4"><UserPlus className="w-5 h-5 text-[#1C4235]" /> Quick Add Patient</h2>
@@ -246,7 +293,20 @@ export default function ManageQueues() {
                 )}
               </div>
 
-              <div className="mt-8 pt-6 border-t border-slate-100">
+              <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-3">
+                <button 
+                  onClick={async () => {
+                    await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/announce`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ tokenId: currentlySeeing._id || currentlySeeing.id })
+                    });
+                    toast.success('Patient announced on screens!');
+                  }}
+                  className="w-full bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 py-3 rounded-xl font-bold transition-colors"
+                >
+                  Announce Again
+                </button>
                 <button 
                   onClick={handleEndSession}
                   className="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20"

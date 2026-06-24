@@ -47,6 +47,12 @@ export const emitCriticalAlarm = (tokenData: any) => {
   }
 };
 
+export const emitAnnounceToken = (tokenData: any) => {
+  if (io) {
+    io.emit('ANNOUNCE_TOKEN', tokenData);
+  }
+};
+
 export const getIo = () => {
   if (!io) {
     throw new Error('Socket.io not initialized!');

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import SocketClient from "../components/SocketClient";
+import AnnouncePopup from "../components/AnnouncePopup";
 import { Toaster } from "sonner";
 
 const geistSans = Geist({
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 overflow-x-hidden">
         <Providers>
           <SocketClient />
+          <AnnouncePopup />
           {children}
         </Providers>
         <Toaster position="top-right" richColors />

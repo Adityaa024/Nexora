@@ -7,7 +7,7 @@ import { useQueueStore } from '../store/useQueueStore';
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`;
 
 export default function SocketClient() {
-  const { setActiveTokens } = useQueueStore();
+  const { setActiveTokens, setAnnouncedToken } = useQueueStore();
 
   useEffect(() => {
     const socket = io(SOCKET_URL);
@@ -36,10 +36,15 @@ export default function SocketClient() {
       // In a real app, you would dispatch a global toast or modal here
     });
 
+    socket.on('ANNOUNCE_TOKEN', (tokenData) => {
+      console.log('Announce token received:', tokenData);
+      setAnnouncedToken(tokenData);
+    });
+
     return () => {
       socket.disconnect();
     };
-  }, [setActiveTokens]);
+  }, [setActiveTokens, setAnnouncedToken]);
 
   return null; // This is a headless component
 }
