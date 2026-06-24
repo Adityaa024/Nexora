@@ -11,7 +11,6 @@ export default function ManageQueues() {
   const [avgTime, setAvgTime] = useState(10);
   const [newPatientName, setNewPatientName] = useState('');
   const [newPatientEmail, setNewPatientEmail] = useState('');
-  const [newPatientEmail, setNewPatientEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [allTokens, setAllTokens] = useState<any[]>([]);
 
