@@ -9,6 +9,7 @@ interface User {
 
 interface Token {
   _id: string;
+  id?: string;
   tokenNumber: string;
   status: string;
   priorityScore: number;
