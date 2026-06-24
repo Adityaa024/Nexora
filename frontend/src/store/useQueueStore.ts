@@ -27,6 +27,7 @@ interface QueueState {
   user: User | null;
   token: string | null;
   activeTokens: Token[];
+  allTokens: Token[];
   announcedToken: Token | null;
   undoBuffer: {
     tokenId: string;
@@ -36,21 +37,27 @@ interface QueueState {
   setUser: (user: User, token: string) => void;
   logout: () => void;
   setActiveTokens: (tokens: Token[]) => void;
+  setAllTokens: (tokens: Token[]) => void;
   setAnnouncedToken: (token: Token | null) => void;
   setUndoBuffer: (buffer: any) => void;
   clearUndoBuffer: () => void;
 }
 
-export const useQueueStore = create<QueueState>((set) => ({
+export const useQueueStore = create<QueueState>()((set) => ({
   user: null,
-  token: null, // JWT token
+  token: null,
   activeTokens: [],
+  allTokens: [],
   announcedToken: null,
   undoBuffer: null,
-
   setUser: (user, token) => set({ user, token }),
-  logout: () => set({ user: null, token: null }),
+  logout: () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    set({ user: null, token: null });
+  },
   setActiveTokens: (tokens) => set({ activeTokens: tokens }),
+  setAllTokens: (tokens) => set({ allTokens: tokens }),
   setAnnouncedToken: (token) => set({ announcedToken: token }),
   setUndoBuffer: (buffer) => set({ undoBuffer: buffer }),
   clearUndoBuffer: () => set({ undoBuffer: null })

@@ -9,14 +9,13 @@ import { useQueueStore } from '../../store/useQueueStore';
 
 export default function AdminControlRoom() {
   const [tokens, setTokens] = useState<any[]>([]);
-  const [allTokens, setAllTokens] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasEmergency, setHasEmergency] = useState(false);
   const [emergencyToken, setEmergencyToken] = useState<any>(null);
   const [newPatientNotification, setNewPatientNotification] = useState<{ time: string } | null>(null);
 
   // Subscribe to the global socket state
-  const { activeTokens } = useQueueStore();
+  const { activeTokens, allTokens, setAllTokens } = useQueueStore();
 
   // Walk-in Modal State
   const [isWalkinModalOpen, setIsWalkinModalOpen] = useState(false);

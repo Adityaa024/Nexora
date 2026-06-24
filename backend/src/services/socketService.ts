@@ -32,9 +32,11 @@ export const initializeSocket = (server: Server) => {
 export const emitQueueStateUpdate = async () => {
   try {
     const activeTokens = await computeQueueWithEstimations();
+    const allTokens = await Token.find().populate('patientId', 'name age gender').sort({ createdAt: -1 });
 
     if (io) {
       io.emit('QUEUE_STATE_BROADCAST', activeTokens);
+      io.emit('ALL_TOKENS_BROADCAST', allTokens);
     }
   } catch (error) {
     console.error('Error emitting queue state:', error);

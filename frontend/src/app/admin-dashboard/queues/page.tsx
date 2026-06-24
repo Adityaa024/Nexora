@@ -7,12 +7,11 @@ import { useQueueStore } from '../../../store/useQueueStore';
 import { toast } from 'sonner';
 
 export default function ManageQueues() {
-  const { activeTokens, setActiveTokens } = useQueueStore();
+  const { activeTokens, setActiveTokens, allTokens, setAllTokens } = useQueueStore();
   const [avgTime, setAvgTime] = useState(10);
   const [newPatientName, setNewPatientName] = useState('');
   const [newPatientEmail, setNewPatientEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [allTokens, setAllTokens] = useState<any[]>([]);
 
   const fetchQueue = async () => {
     try {
@@ -75,17 +74,33 @@ export default function ManageQueues() {
 
   const handleCallNext = async () => {
     const waitingList = activeTokens.filter((t: any) => t.status === 'WAITING' || t.status === 'ARRIVED' || t.status === 'BOOKED');
+    const currentActive = activeTokens.find((t: any) => t.status === 'IN_CONSULTATION');
     
     try {
+      let newActiveTokens = [...activeTokens];
+      let newAllTokens = [...allTokens];
+
+      // Automatically complete the current active patient if there is one
+      if (currentActive) {
+        newActiveTokens = newActiveTokens.filter((t: any) => t._id !== currentActive._id);
+        newAllTokens = newAllTokens.map((t: any) => t._id === currentActive._id ? { ...t, status: 'COMPLETED' } : t);
+        
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tokenId: currentActive._id, newState: 'COMPLETED' })
+        });
+      }
+
       if (waitingList.length > 0) {
         const nextToken = waitingList[0];
         
-        // Optimistic UI Update
-        setActiveTokens(activeTokens.map((t: any) => 
+        // Optimistic UI Update for next token
+        newActiveTokens = newActiveTokens.map((t: any) => 
           t._id === nextToken._id ? { ...t, status: 'IN_CONSULTATION' } : t
-        ));
+        );
 
-        // Fire and forget
+        // Fire and forget state change
         fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/queue/state`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -99,7 +114,9 @@ export default function ManageQueues() {
           body: JSON.stringify({ tokenId: nextToken._id })
         });
       }
-      fetchQueue();
+
+      setActiveTokens(newActiveTokens);
+      setAllTokens(newAllTokens);
     } catch (err) {
       console.error('Failed to call next token', err);
     }
